@@ -22,11 +22,11 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void freemarkerEmployersHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "employee.ftlh", getEmployeeDataModel());
+        renderTemplate(exchange, "employers.ftlh", getEmployeeDataModel());
     }
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "book.ftlh", getBookDataModel());
+        renderTemplate(exchange, "books.ftlh", getBookDataModel());
     }
 
     private void freemarkerSampleHandler(HttpExchange exchange) {
