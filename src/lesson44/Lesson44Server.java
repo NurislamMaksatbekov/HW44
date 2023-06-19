@@ -21,7 +21,7 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "book.ftlg", getBookDataModel());
+        renderTemplate(exchange, "book.ftlh", getBookDataModel());
     }
 
     private static Configuration initFreeMarker() {

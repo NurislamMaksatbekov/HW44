@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FileService {
     private static final Gson GSON = new GsonBuilder().create();
-    private static final Path PATH = Paths.get("data/book.json");
+    private static final Path PATH = Paths.get("data/books.json");
 
     public static List<Book> readBooks()  {
         String json = "";
