@@ -5,18 +5,18 @@ import entity.Employee;
 
 import java.util.List;
 
-public class Collection {
+public class Library {
 
     private List<Book> books;
 
-    private List<Employee> employee;
+    private List<Employee> employers;
 
     public List<Book> getBook() {
         return books;
     }
 
     public List<Employee> getEmployers() {
-        return employee;
+        return employers;
     }
 
 

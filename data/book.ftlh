@@ -20,7 +20,7 @@
         <th scope="col">Year</th>
         <th scope="col">Genre</th>
         <th scope="col">Language</th>
-        <th scope="col">Status</th>
+<#--        <th scope="col">Status</th>-->
     </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
             <td>${book.year}</td>
             <td>${book.genre}</td>
             <td>${book.language}</td>
-            <td>${book.state}</td>
+<#--            <td>${book.state}</td>-->
 <#--            <#if book.state>-->
 <#--                <td>Свободна</td>-->
 <#--            <#else>-->

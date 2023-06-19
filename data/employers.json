@@ -1,0 +1,40 @@
+{
+  "employers": [
+    {
+      "id": 1,
+      "name": "Жасур",
+      "surname": "Хамидов",
+      "email": "jkh@example.com",
+      "password": "qwerty1"
+    },
+    {
+      "id": 2,
+      "name": "Мухаммад",
+      "surname": "Алимов",
+      "email": "mal@example.com",
+      "password": "qwerty1"
+    },
+    {
+      "id": 3,
+      "name": "Нигора",
+      "surname": "Рахимова",
+      "email": "nrah@example.com",
+      "password": "qwerty1"
+    },
+    {
+      "id": 4,
+      "name": "Санжар",
+      "surname": "Турсунов",
+      "email": "stur@example.com",
+      "password": "qwerty1"
+    },
+    {
+      "id": 5,
+      "name": "Дилноза",
+      "surname": "Абдуллаева",
+      "email": "dab@example.com",
+      "password": "qwerty1"
+    }
+  ]
+
+}
