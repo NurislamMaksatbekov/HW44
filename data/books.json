@@ -7,7 +7,7 @@
       "year": 1869,
       "genre": "Роман",
       "language": "Русский",
-      "state": true
+      "status": true
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "year": 1866,
       "genre": "Роман",
       "language": "Русский",
-      "state": true
+      "status": true
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "year": 1967,
       "genre": "Роман",
       "language": "Русский",
-      "state": true
+      "status": true
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "year": 1877,
       "genre": "Роман",
       "language": "Русский",
-      "state": true
+      "status": true
     },
     {
       "id": 5,
@@ -43,7 +43,7 @@
       "year": 1833,
       "genre": "Роман в стихах",
       "language": "Русский",
-      "state": true
+      "status": true
     }
   ]
 }

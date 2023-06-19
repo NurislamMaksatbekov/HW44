@@ -20,17 +20,24 @@
         <th scope="col">Year</th>
         <th scope="col">Genre</th>
         <th scope="col">Language</th>
+        <th scope="col">Status</th>
     </tr>
     </thead>
     <tbody>
     <#list books as book>
         <tr class="bg-success">
-            <th>${book.title}</th>
-            <th>${book.author}</th>
-            <th>${book.year}</th>
-            <th>${book.genre}</th>
-            <th>${book.language}</th>
-            <th><a type="button" class="btn btn-dark" href="/book">Info</a></th>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.year}</td>
+            <td>${book.genre}</td>
+            <td>${book.language}</td>
+            <td>${book.state}</td>
+<#--            <#if book.state>-->
+<#--                <td>Свободна</td>-->
+<#--            <#else>-->
+<#--                <td>Занята</td>-->
+<#--            </#if>-->
+            <td><a type="button" class="btn btn-dark" href="/book">Info</a></td>
         </tr>
     </#list>
     </tbody>
