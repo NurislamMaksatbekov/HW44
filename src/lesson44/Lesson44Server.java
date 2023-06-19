@@ -17,6 +17,11 @@ public class Lesson44Server extends BasicServer {
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
+        registerGet("/books", this::freemarkerBooksHandler);
+    }
+
+    private void freemarkerBooksHandler(HttpExchange exchange) {
+        renderTemplate(exchange, "book.ftlg", getBookDataModel());
     }
 
     private static Configuration initFreeMarker() {
@@ -73,6 +78,10 @@ public class Lesson44Server extends BasicServer {
         } catch (IOException | TemplateException e) {
             e.printStackTrace();
         }
+    }
+
+    private BookDataModel getBookDataModel(){
+        return new BookDataModel();
     }
 
     private SampleDataModel getSampleDataModel() {
