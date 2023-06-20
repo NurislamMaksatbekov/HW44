@@ -9,6 +9,16 @@ public class Book {
     private String language;
     private boolean status;
 
+    public Book(int id, String title, String author, int year, String genre, String language, boolean status) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.genre = genre;
+        this.language = language;
+        this.status = status;
+    }
+
     public int getId() {
         return id;
     }

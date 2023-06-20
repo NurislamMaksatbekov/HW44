@@ -1,4 +1,4 @@
-package lesson44;
+package dataModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

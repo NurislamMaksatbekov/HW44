@@ -1,6 +1,9 @@
 package lesson44;
 
 import com.sun.net.httpserver.HttpExchange;
+import dataModel.BooksDataModel;
+import dataModel.EmployersDataModel;
+import dataModel.SampleDataModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -17,20 +20,26 @@ public class Lesson44Server extends BasicServer {
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
+        registerGet("/book", this::freemarkerBookHandler);
         registerGet("/books", this::freemarkerBooksHandler);
         registerGet("/employers", this::freemarkerEmployersHandler);
     }
 
-    private void freemarkerEmployersHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "employers.ftlh", getEmployeeDataModel());
+    private void freemarkerBookHandler(HttpExchange exchange) {
+        renderTemplate(exchange, "book.ftlh", getBooksDataModel());
     }
 
+
     private void freemarkerBooksHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "books.ftlh", getBookDataModel());
+        renderTemplate(exchange, "books.ftlh", getBooksDataModel());
+    }
+
+    private void freemarkerEmployersHandler(HttpExchange exchange) {
+        renderTemplate(exchange, "employers.ftlh", getEmployersDataModel());
     }
 
     private void freemarkerSampleHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "sample.html", getSampleDataModel());
+        renderTemplate(exchange, "sample.ftlh", getSampleDataModel());
     }
 
     private static Configuration initFreeMarker() {
@@ -87,12 +96,12 @@ public class Lesson44Server extends BasicServer {
         }
     }
 
-    private BookDataModel getBookDataModel(){
-        return new BookDataModel();
+    private BooksDataModel getBooksDataModel(){
+        return new BooksDataModel();
     }
 
-    private EmployeeDataModel getEmployeeDataModel(){
-        return new EmployeeDataModel();
+    private EmployersDataModel getEmployersDataModel(){
+        return new EmployersDataModel();
     }
 
     private SampleDataModel getSampleDataModel() {

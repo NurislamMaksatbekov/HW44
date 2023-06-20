@@ -15,12 +15,12 @@
 <table class="table table-warning">
     <thead>
     <tr>
-        <th scope="col">Title</th>
-        <th scope="col">Author</th>
-        <th scope="col">Year</th>
-        <th scope="col">Genre</th>
-        <th scope="col">Language</th>
-<#--        <th scope="col">Status</th>-->
+        <th scope="col">Название</th>
+        <th scope="col">Автор</th>
+        <th scope="col">Год выпуска</th>
+        <th scope="col">Жанр</th>
+        <th scope="col">Язык</th>
+        <th scope="col">Статус</th>
     </tr>
     </thead>
     <tbody>
@@ -31,13 +31,12 @@
             <td>${book.year}</td>
             <td>${book.genre}</td>
             <td>${book.language}</td>
-<#--            <td>${book.state}</td>-->
-<#--            <#if book.state>-->
-<#--                <td>Свободна</td>-->
-<#--            <#else>-->
-<#--                <td>Занята</td>-->
-<#--            </#if>-->
-            <td><a type="button" class="btn btn-dark" href="/book">Info</a></td>
+            <#if book.status>
+                <td>Свободна</td>
+            <#else>
+                <td>Занята</td>
+            </#if>
+            <td><a type="button" class="btn btn-dark" href="/book">Подробнее</a></td>
         </tr>
     </#list>
     </tbody>

@@ -1,4 +1,4 @@
-package lesson44;
+package dataModel;
 
 import entity.Book;
 import util.FileService;
@@ -6,11 +6,11 @@ import util.FileService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDataModel {
+public class BooksDataModel {
 
     private final List<Book> books = new ArrayList<>();
 
-    public BookDataModel() {
+    public BooksDataModel() {
         books.addAll(FileService.readBooks());
     }
 

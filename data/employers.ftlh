@@ -14,9 +14,9 @@
 <table class="table table-striped table-dark">
     <thead class="thead-dark">
     <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Surname</th>
-        <th scope="col">Email</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Адрес электронной почты</th>
     </tr>
     </thead>
     <tbody>
