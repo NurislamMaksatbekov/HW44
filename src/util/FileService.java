@@ -26,7 +26,7 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return GSON.fromJson(json, Library.class).getBook();
+        return GSON.fromJson(json, Library.class).getBooks();
     }
 
     public static List<Employee> readEmployers()  {

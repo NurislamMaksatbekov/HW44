@@ -23,6 +23,11 @@ public class Lesson44Server extends BasicServer {
         registerGet("/book", this::freemarkerBookHandler);
         registerGet("/books", this::freemarkerBooksHandler);
         registerGet("/employers", this::freemarkerEmployersHandler);
+        registerGet("/employee", this::freemarkerEmployeeHandler);
+    }
+
+    private void freemarkerEmployeeHandler(HttpExchange exchange) {
+        renderTemplate(exchange, "employee.ftlh", getEmployersDataModel());
     }
 
     private void freemarkerBookHandler(HttpExchange exchange) {

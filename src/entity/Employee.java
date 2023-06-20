@@ -1,20 +1,30 @@
 package entity;
 
-import util.FileService;
+import java.util.List;
 
 public class Employee {
+
     private int id;
     private String name;
     private String surname;
     private String email;
     private String password;
+    private int read;
+    private int reading;
+    private List<Book> readBook;
+    private List<Book> readingBook;
 
-    public Employee(int id, String name, String surname, String email, String password) {
+
+    public Employee(int id, String name, String surname, String email, String password, int read, int reading, List<Book> readBook, List<Book> readingBook) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.read = read;
+        this.reading = reading;
+        this.readBook = readBook;
+        this.readingBook = readingBook;
     }
 
     public int getId() {
@@ -56,4 +66,37 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getRead() {
+        return read;
+    }
+
+    public void setRead(int read) {
+        this.read = read;
+    }
+
+    public int getReading() {
+        return reading;
+    }
+
+    public void setReading(int reading) {
+        this.reading = reading;
+    }
+
+    public List<Book> getReadBook() {
+        return readBook;
+    }
+
+    public void setReadBook(List<Book> readBook) {
+        this.readBook = readBook;
+    }
+
+    public List<Book> getReadingBook() {
+        return readingBook;
+    }
+
+    public void setReadingBook(List<Book> readingBook) {
+        this.readingBook = readingBook;
+    }
 }
+
