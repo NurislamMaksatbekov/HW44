@@ -2,15 +2,30 @@ package server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import dataModel.UserDataModel;
+import entity.User;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class BasicServer {
+
+    protected User user;
+
+
+    private final Configuration freemarker = initFreeMarker();
+
 
     private final HttpServer server;
     // путь к каталогу с файлами, которые будет отдавать сервер по запросам клиентов
@@ -20,6 +35,60 @@ public abstract class BasicServer {
     protected BasicServer(String host, int port) throws IOException {
         server = createServer(host, port);
         registerCommonHandlers();
+    }
+
+    protected void renderTemplate(HttpExchange exchange, String templateFile, Object dataModel) {
+        try {
+            // Загружаем шаблон из файла по имени.
+            // Шаблон должен находится по пути, указанном в конфигурации
+            Template temp = freemarker.getTemplate(templateFile);
+
+            // freemarker записывает преобразованный шаблон в объект класса writer
+            // а наш сервер отправляет клиенту массивы байт
+            // по этому нам надо сделать "мост" между этими двумя системами
+
+            // создаём поток, который сохраняет всё, что в него будет записано в байтовый массив
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            // создаём объект, который умеет писать в поток и который подходит для freemarker
+            try (OutputStreamWriter writer = new OutputStreamWriter(stream)) {
+
+                // обрабатываем шаблон заполняя его данными из модели
+                // и записываем результат в объект "записи"
+                temp.process(dataModel, writer);
+                writer.flush();
+
+                // получаем байтовый поток
+                var data = stream.toByteArray();
+
+                // отправляем результат клиенту
+                sendByteData(exchange, ResponseCodes.OK, ContentType.TEXT_HTML, data);
+            }
+        } catch (IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+    }
+
+        private static Configuration initFreeMarker() {
+            try {
+                Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
+                // путь к каталогу в котором у нас хранятся шаблоны
+                // это может быть совершенно другой путь, чем тот, откуда сервер берёт файлы
+                // которые отправляет пользователю
+                cfg.setDirectoryForTemplateLoading(new File("data"));
+
+                // прочие стандартные настройки о них читать тут
+                // https://freemarker.apache.org/docs/pgui_quickstart_createconfiguration.html
+                cfg.setDefaultEncoding("UTF-8");
+                cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+                cfg.setLogTemplateExceptions(false);
+                cfg.setWrapUncheckedExceptions(true);
+                cfg.setFallbackOnNullLoopVariable(false);
+                return cfg;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
     }
 
     private static String makeKey(String method, String route) {
@@ -58,7 +127,7 @@ public abstract class BasicServer {
         // обработчик для корневого запроса
         // именно этот обработчик отвечает что отображать,
         // когда пользователь запрашивает localhost:9889
-        registerGet("/", exchange -> sendFile(exchange, makeFilePath("index.ftlh"), ContentType.TEXT_HTML));
+        registerGet("/", this::indexPage);
 
         // эти обрабатывают запросы с указанными расширениями
         registerFileHandler(".css", ContentType.TEXT_CSS);
@@ -68,8 +137,16 @@ public abstract class BasicServer {
 
     }
 
+    private void indexPage(HttpExchange exchange) {
+        renderTemplate(exchange, "index.ftlh", new UserDataModel(user));
+    }
+
     protected final void registerGet(String route, RouteHandler handler) {
         getRoutes().put("GET " + route, handler);
+    }
+
+    protected final void registerPost(String route, RouteHandler handler){
+        getRoutes().put("POST " + route, handler);
     }
 
     protected final void registerFileHandler(String fileExt, ContentType type) {
@@ -123,6 +200,33 @@ public abstract class BasicServer {
     private void handleIncomingServerRequests(HttpExchange exchange) {
         var route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
         route.handle(exchange);
+    }
+
+    protected String getContentType(HttpExchange exchange){
+        return exchange.getRequestHeaders()
+                .getOrDefault("Content-Type", List.of(""))
+                .get(0);
+    }
+
+    protected String getBody(HttpExchange exchange){
+        InputStream input = exchange.getRequestBody();
+        InputStreamReader isr = new InputStreamReader(input, StandardCharsets.UTF_8);
+        try(BufferedReader reader = new BufferedReader(isr)){
+            return reader.lines().collect(Collectors.joining(("")));
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    protected void redirect303(HttpExchange exchange, String route){
+        try {
+            exchange.getResponseHeaders().add("Location", route);
+            exchange.sendResponseHeaders(ResponseCodes.REDIRECT.getCode(), 0);
+            exchange.getResponseBody().close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public final void start() {
