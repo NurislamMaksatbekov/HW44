@@ -15,8 +15,7 @@ public class Employee {
     private List<Book> readingBook;
 
 
-    public Employee(int id, String name, String surname, String email, String password, int read, int reading, List<Book> readBook, List<Book> readingBook) {
-        this.id = id;
+    public Employee(String name, String surname, String email, String password, int read, int reading, List<Book> readBook, List<Book> readingBook) {
         this.name = name;
         this.surname = surname;
         this.email = email;

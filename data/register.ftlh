@@ -6,6 +6,7 @@
     <title>Register form</title>
     <link rel="stylesheet" href="css/forms.css">
 </head>
+
 <body>
     <main>
         <form action="/register" method="post">
@@ -34,7 +35,7 @@
                     <span class="details">one more step to go</span>
                 </div>
                 <div class="form-element">
-                    <button class="register-button" type="submit">Login!</button>
+                    <button class="register-button" type="submit">REGISTER!</button>
                 </div>
             </fieldset>
         </form>

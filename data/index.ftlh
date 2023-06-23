@@ -44,6 +44,8 @@
                 <a href="/login" class="btn btn-outline-success my-2 my-sm-0">Login</a>
             </#if>
     </div>
+    <a href="/register" class="btn btn-outline-primary my-2 my-sm-0 ml-3">Register</a>
+
 </nav>
 
 <div class="container">

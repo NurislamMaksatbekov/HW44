@@ -2,6 +2,7 @@ package util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import entity.Book;
 import entity.Employee;
 import entity.Library;
@@ -9,6 +10,7 @@ import entity.Library;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,13 +34,14 @@ public class FileService {
     }
 
     public static List<Employee> readEmployers()  {
+        Type list = new TypeToken<List<Employee>>(){}.getType();
         String json = "";
         try {
             json = Files.readString(WAY);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return GSON.fromJson(json, Library.class).getEmployers();
+        return GSON.fromJson(json, list);
     }
 
     public static void writeEmployers(Employee employee){

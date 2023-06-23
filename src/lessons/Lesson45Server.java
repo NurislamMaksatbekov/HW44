@@ -1,21 +1,54 @@
 package lessons;
 
 import com.sun.net.httpserver.HttpExchange;
+import entity.Book;
+import entity.Employee;
 import entity.User;
 import server.ContentType;
 import server.Utils;
+import util.FileService;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Lesson45Server extends Lesson44Server {
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
+        registerGet("/error", this::errorGet);
         registerGet("/login", this::loginGet);
         registerPost("/login", this::loginPost);
         registerGet("/register", this::registerGet);
-        registerPost("/register", this::RegisterPost);
+        registerPost("/register", this::registerPost);
+    }
+
+    private void registerPost(HttpExchange exchange) {
+        String raw = getBody(exchange);
+        Map<String, String> register = Utils.parseUrlEncoded(raw, "&");
+        List<Employee> employees = FileService.readEmployers();
+        String mail = register.get("email");
+
+        if (employees.stream().anyMatch(e -> e.getEmail().equals(mail))) {
+            redirect303(exchange, "/error");
+        } else {
+            String name = register.get("name");
+            String surname = register.get("surname");
+            String password = register.get("password");
+
+            Employee employee = new Employee(name, surname, mail, password, 0, 0, new ArrayList<>(), new ArrayList<>());
+            employees.add(employee);
+            FileService.writeEmployers(employee);
+            redirect303(exchange, "/login");
+        }
+    }
+
+
+
+    private void errorGet(HttpExchange exchange) {
+        Path path = makeFilePath("error.ftlh");
+        sendFile(exchange, path, ContentType.TEXT_HTML);
     }
 
     private void registerGet(HttpExchange exchange) {

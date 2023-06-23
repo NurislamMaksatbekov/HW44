@@ -1,13 +1,46 @@
-{
-  "employers": [
-    {
-      "id": 1,
-      "name": "Жасур",
-      "surname": "Хамидов",
-      "email": "jkh@example.com",
-      "password": "qwerty1",
-      "read": 0,
-      "reading": 0
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "name": "Жасур",
+    "surname": "Хамидов",
+    "email": "jkh@example.com",
+    "password": "qwerty1",
+    "read": 0,
+    "reading": 0,
+    "readBook": [],
+    "readingBook": []
+  },
+  {
+    "id": 2,
+    "name": "sdsdadssda",
+    "surname": "dssdasdadsa",
+    "email": "dsasadssad@dsas",
+    "password": "dsadsaassad",
+    "read": 0,
+    "reading": 0,
+    "readBook": [],
+    "readingBook": []
+  },
+  {
+    "id": 3,
+    "name": "nurislam",
+    "surname": "maksatbekov",
+    "email": "nurislam@mail.ru",
+    "password": "nurislamsexy",
+    "read": 0,
+    "reading": 0,
+    "readBook": [],
+    "readingBook": []
+  },
+  {
+    "id": 4,
+    "name": "aaaa",
+    "surname": "bbbbbb",
+    "email": "vvvvv@v",
+    "password": "sdadsdaad",
+    "read": 0,
+    "reading": 0,
+    "readBook": [],
+    "readingBook": []
+  }
+]
