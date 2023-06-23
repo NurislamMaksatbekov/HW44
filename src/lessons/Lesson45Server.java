@@ -2,7 +2,6 @@ package lessons;
 
 import com.sun.net.httpserver.HttpExchange;
 import entity.User;
-import server.BasicServer;
 import server.ContentType;
 import server.Utils;
 
@@ -15,6 +14,13 @@ public class Lesson45Server extends Lesson44Server {
         super(host, port);
         registerGet("/login", this::loginGet);
         registerPost("/login", this::loginPost);
+        registerGet("/register", this::registerGet);
+        registerPost("/register", this::RegisterPost);
+    }
+
+    private void registerGet(HttpExchange exchange) {
+        Path path = makeFilePath("register.ftlh");
+        sendFile(exchange, path, ContentType.TEXT_HTML);
     }
 
     private void loginPost(HttpExchange exchange) {

@@ -6,7 +6,9 @@ import entity.Book;
 import entity.Employee;
 import entity.Library;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,5 +39,17 @@ public class FileService {
             e.printStackTrace();
         }
         return GSON.fromJson(json, Library.class).getEmployers();
+    }
+
+    public static void writeEmployers(Employee employee){
+        List<Employee> employees = readEmployers();
+        employee.setId(employees.size() + 1);
+        employees.add(employee);
+        try (Writer writer = new FileWriter(WAY.toString())){
+            String json = GSON.toJson(employees);
+            writer.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
