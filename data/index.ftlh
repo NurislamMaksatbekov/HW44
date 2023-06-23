@@ -38,11 +38,7 @@
                 <a class="nav-link disabled">Disabled</a>
             </li>
         </ul>
-            <#if user?has_content>
-                <i class="btn btn-outline-success my-2 my-sm-0">${user.email}</i>
-                <#else>
                 <a href="/login" class="btn btn-outline-success my-2 my-sm-0">Login</a>
-            </#if>
     </div>
     <a href="/register" class="btn btn-outline-primary my-2 my-sm-0 ml-3">Register</a>
 

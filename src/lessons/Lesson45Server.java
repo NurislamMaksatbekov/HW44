@@ -1,7 +1,9 @@
 package lessons;
 
 import com.sun.net.httpserver.HttpExchange;
+import dataModel.UserDataModel;
 import entity.Employee;
+import entity.User;
 import server.ContentType;
 import server.Utils;
 import util.FileService;
@@ -30,7 +32,7 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void profileGet(HttpExchange exchange) {
-
+        renderTemplate(exchange, "profile.ftlh", new UserDataModel(user));
     }
 
     private void registerPost(HttpExchange exchange) {
@@ -67,10 +69,11 @@ public class Lesson45Server extends Lesson44Server {
 
     private void loginPost(HttpExchange exchange) {
         String raw = getBody(exchange);
-        Map<String, String> parse = Utils.parseUrlEncoded(raw, "&");
+        Map<String, String> parsed = Utils.parseUrlEncoded(raw, "&");
         List<Employee> employees = FileService.readEmployers();
-        String email = parse.get("email");
-        String password = parse.get("password");
+        String email = parsed.get("email");
+        String password = parsed.get("password");
+        user = new User(parsed.get("email"), parsed.get("password"));
 
         if(employees.stream().anyMatch(e -> e.getEmail().equals(email) && e.getPassword().equals(password))){
             redirect303(exchange, "/profile");

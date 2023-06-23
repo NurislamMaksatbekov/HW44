@@ -134,11 +134,11 @@ public abstract class BasicServer {
         registerFileHandler(".html", ContentType.TEXT_HTML);
         registerFileHandler(".jpg", ContentType.IMAGE_JPEG);
         registerFileHandler(".png", ContentType.IMAGE_PNG);
-
     }
 
     private void indexPage(HttpExchange exchange) {
-        renderTemplate(exchange, "index.ftlh", new UserDataModel(user));
+        Path path = makeFilePath("index.ftlh");
+        sendFile(exchange, path, ContentType.TEXT_HTML);
     }
 
     protected final void registerGet(String route, RouteHandler handler) {
