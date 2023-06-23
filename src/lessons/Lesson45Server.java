@@ -16,6 +16,7 @@ public class Lesson45Server extends Lesson44Server {
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/error", this::errorGet);
+        registerGet("/incorrectData", this::incorrectGet);
         registerGet("/login", this::loginGet);
         registerPost("/login", this::loginPost);
         registerGet("/register", this::registerGet);
@@ -23,9 +24,12 @@ public class Lesson45Server extends Lesson44Server {
         registerGet("/profile", this::profileGet);
     }
 
-    private void profileGet(HttpExchange exchange) {
-        Path path = makeFilePath( "profile.ftlh");
+    private void incorrectGet(HttpExchange exchange) {
+        Path path = makeFilePath("incorrectData.ftlh");
         sendFile(exchange, path, ContentType.TEXT_HTML);
+    }
+
+    private void profileGet(HttpExchange exchange) {
 
     }
 

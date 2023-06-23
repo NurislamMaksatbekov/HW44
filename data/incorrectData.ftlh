@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"></head>
 </head>
 <body>
-<p><b>Ошибка!</b></p>
-<p>Пользователь с таким email уже существует</p>
-<a href="/register" class="btn btn-outline-success my-2 my-sm-0">Попробовать Заново</a>
-<p class="description mt-5">Если у вас уже есть аккаунт вы можете войти по кнопке "Войти"</p>
-<a href="/login" class="btn btn-outline-success my-2 my-sm-0">Войти</a>
+<p><b>Ошибка</b></p>
+<p>Неправильный логин или пароль!</p>
+<a href="/login" class="btn btn-outline-success my-2 my-sm-0">Попробовать Заново</a>
+<p class="title mt-5">Если у вас нет аккаунта вы можете зарегестрироваться по кнопке "Регистрация"</p>
+<a href="/register" class="btn btn-outline-success my-2 my-sm-0">Регистрация</a>
 
 </body>
 </html>
