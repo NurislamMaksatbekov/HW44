@@ -14,6 +14,10 @@ public class Employee {
     private List<Book> readBook;
     private List<Book> readingBook;
 
+    public Employee(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public Employee(String name, String surname, String email, String password, int read, int reading, List<Book> readBook, List<Book> readingBook) {
         this.name = name;

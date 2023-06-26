@@ -1,14 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<#import "layout.ftlh" as main>
+<@main.layout>
+    <style>
+        form {
+            width: 50%;
+            max-width: 500px;
+            min-width: 200px;
+            margin: 0 auto;
+        }
 
-<head>
-    <meta charset="UTF-8">
-    <title>Login form</title>
-    <link rel="stylesheet" href="css/forms.css">
-</head>
+        fieldset {
+            border: 0;
+            padding: 0;
+            margin: 0;
+            margin-top: 20px;
+        }
 
-<body>
-<main>
+        .legend {
+            margin: 0 0 10px;
+            font-size: 24px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .form-element {
+            margin-top: 20px;
+        }
+
+        fieldset input {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+        }
+
+        fieldset label {
+            display: none;
+        }
+
+        .hr-line {
+            border-bottom: 1px solid #ddd;
+            color: #999;
+            font-size: 12px;
+            line-height: 0;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .details {
+            background-color: #fff;
+            padding: 0 15px;
+        }
+
+        .register-button {
+            font-family: inherit;
+            font-size: 19px;
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            background-color: #2da562;
+            border: 0;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
     <form action="/login" method="post">
         <fieldset>
             <div class="legend">
@@ -31,6 +91,6 @@
             </div>
         </fieldset>
     </form>
-</main>
-</body>
-</html>
+
+</@main.layout>
+

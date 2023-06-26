@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployersDataModel {
+
     private final List<Employee> employee = new ArrayList<>();
 
     public EmployersDataModel() {

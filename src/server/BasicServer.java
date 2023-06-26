@@ -2,8 +2,7 @@ package server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import dataModel.UserDataModel;
-import entity.User;
+import entity.Employee;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 
 public abstract class BasicServer {
 
-    protected User user;
+    protected Employee employee;
 
 
     private final Configuration freemarker = initFreeMarker();
@@ -137,8 +136,7 @@ public abstract class BasicServer {
     }
 
     private void indexPage(HttpExchange exchange) {
-        Path path = makeFilePath("index.ftlh");
-        sendFile(exchange, path, ContentType.TEXT_HTML);
+        renderTemplate(exchange, "index.ftlh", null);
     }
 
     protected final void registerGet(String route, RouteHandler handler) {
