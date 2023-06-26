@@ -3,14 +3,7 @@ package lessons;
 import com.sun.net.httpserver.HttpExchange;
 import dataModel.BooksDataModel;
 import dataModel.EmployersDataModel;
-import dataModel.SampleDataModel;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
 import server.BasicServer;
-import server.ContentType;
-import server.ResponseCodes;
 
 import java.io.*;
 
@@ -18,7 +11,6 @@ public class Lesson44Server extends BasicServer {
 
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
-        registerGet("/sample", this::freemarkerSampleHandler);
         registerGet("/book", this::freemarkerBookHandler);
         registerGet("/books", this::freemarkerBooksHandler);
         registerGet("/employers", this::freemarkerEmployersHandler);
@@ -42,10 +34,6 @@ public class Lesson44Server extends BasicServer {
         renderTemplate(exchange, "employers.ftlh", getEmployersDataModel());
     }
 
-    private void freemarkerSampleHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "sample.ftlh", getSampleDataModel());
-    }
-
 
     private BooksDataModel getBooksDataModel(){
         return new BooksDataModel();
@@ -55,9 +43,4 @@ public class Lesson44Server extends BasicServer {
         return new EmployersDataModel();
     }
 
-    private SampleDataModel getSampleDataModel() {
-        // возвращаем экземпляр тестовой модели-данных
-        // которую freemarker будет использовать для наполнения шаблона
-        return new SampleDataModel();
-    }
 }

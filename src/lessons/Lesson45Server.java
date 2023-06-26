@@ -4,12 +4,10 @@ import com.sun.net.httpserver.HttpExchange;
 import dataModel.UserDataModel;
 import entity.Employee;
 import entity.User;
-import server.ContentType;
-import server.Utils;
+import util.Utils;
 import util.FileService;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +25,7 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void incorrectGet(HttpExchange exchange) {
-        Path path = makeFilePath("incorrectData.ftlh");
-        sendFile(exchange, path, ContentType.TEXT_HTML);
+        renderTemplate(exchange, "incorrectData.ftlh", null);
     }
 
     private void profileGet(HttpExchange exchange) {
@@ -58,13 +55,11 @@ public class Lesson45Server extends Lesson44Server {
 
 
     private void errorGet(HttpExchange exchange) {
-        Path path = makeFilePath("error.ftlh");
-        sendFile(exchange, path, ContentType.TEXT_HTML);
+        renderTemplate(exchange, "error.ftlh", null);
     }
 
     private void registerGet(HttpExchange exchange) {
-        Path path = makeFilePath("register.ftlh");
-        sendFile(exchange, path, ContentType.TEXT_HTML);
+        renderTemplate(exchange, "register.ftlh", null);
     }
 
     private void loginPost(HttpExchange exchange) {
@@ -83,7 +78,6 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void loginGet(HttpExchange exchange) {
-        Path path = makeFilePath("login.ftlh");
-        sendFile(exchange, path, ContentType.TEXT_HTML);
+        renderTemplate(exchange, "login.ftlh", null);
     }
 }
