@@ -52,7 +52,6 @@ public class Lesson45Server extends Lesson44Server {
     }
 
 
-
     private void errorGet(HttpExchange exchange) {
         renderTemplate(exchange, "error.ftlh", null);
     }

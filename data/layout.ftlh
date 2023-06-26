@@ -45,8 +45,8 @@
                     <a class="nav-link" href="/cookie">Cookie</a>
                 </li>
             </ul>
-            <#if user?has_content>
-                <i class="btn btn-outline-success my-2 my-sm-0">${user.email}</i>
+            <#if employee?has_content>
+                <i class="btn btn-outline-success my-2 my-sm-0">${employee.email}</i>
             <#else>
                 <a href="/login" class="btn btn-outline-success my-2 my-sm-0">LogIn</a>
             </#if>

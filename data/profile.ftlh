@@ -4,9 +4,9 @@
         <div class="card" style="width: 18rem;">
             <p>Information about you</p>
             <ul class="list-group list-group-flush">
-                <#if user?has_content>
-                    <li><p><b>Your login: </b> ${user.email}</p></li>
-                    <li><p><b>Your password: </b> ${user.password}</p></li>
+                <#if employee?has_content>
+                    <li><p><b>Your login: </b> ${employee.email}</p></li>
+                    <li><p><b>Your password: </b> ${employee.password}</p></li>
                 </#if>
             </ul>
         </div>
