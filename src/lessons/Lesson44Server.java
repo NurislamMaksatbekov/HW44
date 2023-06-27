@@ -21,20 +21,37 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void freemarkerEmployeeHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "employee.ftlh", getEmployersDataModel());
+        if(isAuthorized()){
+            renderTemplate(exchange, "employee.ftlh", getEmployersDataModel());
+        }else {
+            redirect303(exchange, "/login");
+        }
     }
 
     private void freemarkerBookHandler(HttpExchange exchange) {
+        if(isAuthorized()){
             renderTemplate(exchange, "book.ftlh", null);
+        }else {
+            redirect303(exchange, "/login");
+
+        }
     }
 
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
+        if(isAuthorized()){
             renderTemplate(exchange, "books.ftlh", getBooksDataModel());
+        }else {
+            redirect303(exchange, "/login");
+        }
     }
 
     private void freemarkerEmployersHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "employees.ftlh", getEmployersDataModel());
+        if(isAuthorized()){
+            renderTemplate(exchange, "employees.ftlh", getEmployersDataModel());
+        }else {
+            redirect303(exchange, "/login");
+        }
     }
 
 

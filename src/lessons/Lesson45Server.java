@@ -26,11 +26,20 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void incorrectGet(HttpExchange exchange) {
-        renderTemplate(exchange, "incorrectData.ftlh", null);
+        if(isAuthorized()){
+            renderTemplate(exchange, "incorrectData.ftlh", null);
+        }else {
+            redirect303(exchange, "/login");
+
+        }
     }
 
     private void profileGet(HttpExchange exchange) {
-        renderTemplate(exchange, "profile.ftlh", new EmployeeDataModel(employee));
+        if(isAuthorized()) {
+            renderTemplate(exchange, "profile.ftlh", new EmployeeDataModel(employee));
+        }else {
+            redirect303(exchange, "/login");
+        }
     }
 
     private void registerPost(HttpExchange exchange) {
@@ -55,7 +64,11 @@ public class Lesson45Server extends Lesson44Server {
 
 
     private void errorGet(HttpExchange exchange) {
-        renderTemplate(exchange, "error.ftlh", null);
+        if(isAuthorized()){
+            renderTemplate(exchange, "error.ftlh", null);
+        }else {
+            redirect303(exchange, "/login");
+        }
     }
 
     private void registerGet(HttpExchange exchange) {
@@ -85,8 +98,10 @@ public class Lesson45Server extends Lesson44Server {
             data.put("cookies", cookies);
 
             redirect303(exchange, "/profile");
+            setAuthorized(!isAuthorized());
         } else {
             redirect303(exchange, "/incorrectData");
+            setAuthorized(isAuthorized());
         }
     }
 

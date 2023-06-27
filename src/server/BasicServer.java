@@ -21,9 +21,10 @@ import java.util.stream.Collectors;
 public abstract class BasicServer {
 
     protected Employee employee;
-
     protected Cookie cookie;
     protected int maxAge = 300;
+    protected boolean authorized;
+
 
     public int getMaxAge() {
         return maxAge;
@@ -32,6 +33,14 @@ public abstract class BasicServer {
     public int setMaxAge(int maxAge) {
         this.maxAge = maxAge;
         return maxAge;
+    }
+
+    public boolean isAuthorized() {
+        return authorized;
+    }
+
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 
     private final Configuration freemarker = initFreeMarker();
@@ -219,6 +228,7 @@ public abstract class BasicServer {
     protected void setCookie(HttpExchange exchange, Cookie cookie){
         exchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
     }
+
 
     public final void start() {
         server.start();
