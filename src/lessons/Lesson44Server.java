@@ -9,6 +9,7 @@ import java.io.*;
 
 public class Lesson44Server extends BasicServer {
 
+
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
             registerGet("/books/book", this::freemarkerBookHandler);
@@ -29,11 +30,7 @@ public class Lesson44Server extends BasicServer {
 
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
-        if(!employee.isAuthorized()) {
             renderTemplate(exchange, "books.ftlh", getBooksDataModel());
-        }else {
-            redirect303(exchange, "/login");
-        }
     }
 
     private void freemarkerEmployersHandler(HttpExchange exchange) {

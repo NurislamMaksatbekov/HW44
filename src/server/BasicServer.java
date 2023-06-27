@@ -22,12 +22,22 @@ public abstract class BasicServer {
 
     protected Employee employee;
 
+    protected Cookie cookie;
+    protected int maxAge = 300;
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public int setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
+        return maxAge;
+    }
 
     private final Configuration freemarker = initFreeMarker();
 
 
     private final HttpServer server;
-    // путь к каталогу с файлами, которые будет отдавать сервер по запросам клиентов
     private final String dataDir = "data";
     private Map<String, RouteHandler> routes = new HashMap<>();
 
@@ -38,28 +48,17 @@ public abstract class BasicServer {
 
     protected void renderTemplate(HttpExchange exchange, String templateFile, Object dataModel) {
         try {
-            // Загружаем шаблон из файла по имени.
-            // Шаблон должен находится по пути, указанном в конфигурации
             Template temp = freemarker.getTemplate(templateFile);
 
-            // freemarker записывает преобразованный шаблон в объект класса writer
-            // а наш сервер отправляет клиенту массивы байт
-            // по этому нам надо сделать "мост" между этими двумя системами
 
-            // создаём поток, который сохраняет всё, что в него будет записано в байтовый массив
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            // создаём объект, который умеет писать в поток и который подходит для freemarker
             try (OutputStreamWriter writer = new OutputStreamWriter(stream)) {
 
-                // обрабатываем шаблон заполняя его данными из модели
-                // и записываем результат в объект "записи"
                 temp.process(dataModel, writer);
                 writer.flush();
 
-                // получаем байтовый поток
                 var data = stream.toByteArray();
 
-                // отправляем результат клиенту
                 sendByteData(exchange, ResponseCodes.OK, ContentType.TEXT_HTML, data);
             }
         } catch (IOException | TemplateException e) {
@@ -70,13 +69,8 @@ public abstract class BasicServer {
         private static Configuration initFreeMarker() {
             try {
                 Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
-                // путь к каталогу в котором у нас хранятся шаблоны
-                // это может быть совершенно другой путь, чем тот, откуда сервер берёт файлы
-                // которые отправляет пользователю
                 cfg.setDirectoryForTemplateLoading(new File("data"));
 
-                // прочие стандартные настройки о них читать тут
-                // https://freemarker.apache.org/docs/pgui_quickstart_createconfiguration.html
                 cfg.setDefaultEncoding("UTF-8");
                 cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
                 cfg.setLogTemplateExceptions(false);
@@ -86,8 +80,6 @@ public abstract class BasicServer {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-
     }
 
     private static String makeKey(String method, String route) {
@@ -116,27 +108,18 @@ public abstract class BasicServer {
     }
 
     private void registerCommonHandlers() {
-        // самый основной обработчик, который будет определять
-        // какие обработчики вызывать в дальнейшем
         server.createContext("/", this::handleIncomingServerRequests);
-
-        // специфичные обработчики, которые выполняют свои действия
-        // в зависимости от типа запроса
-
-        // обработчик для корневого запроса
-        // именно этот обработчик отвечает что отображать,
-        // когда пользователь запрашивает localhost:9889
         registerGet("/", this::indexPage);
-
-        // эти обрабатывают запросы с указанными расширениями
         registerFileHandler(".css", ContentType.TEXT_CSS);
         registerFileHandler(".html", ContentType.TEXT_HTML);
         registerFileHandler(".jpg", ContentType.IMAGE_JPEG);
         registerFileHandler(".png", ContentType.IMAGE_PNG);
     }
 
-    private void indexPage(HttpExchange exchange) {
+
+    private void indexPage(HttpExchange exchange){
         renderTemplate(exchange, "index.ftlh", null);
+        setMaxAge(7);
     }
 
     protected final void registerGet(String route, RouteHandler handler) {

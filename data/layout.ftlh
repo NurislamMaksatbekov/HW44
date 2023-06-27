@@ -42,15 +42,15 @@
                     <a class="nav-link" href="/books">Books</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cookie">Cookie</a>
+                    <a class="nav-link" href="/employees">Employees</a>
                 </li>
             </ul>
             <#if employee?has_content>
-                <i class="btn btn-outline-success my-2 my-sm-0">${employee.email}</i>
+                <a href="/" class="btn btn-outline-success my-2 my-sm-0">LOGOUT</a>
             <#else>
                 <a href="/login" class="btn btn-outline-success my-2 my-sm-0">LogIn</a>
+                <a href="/register" class="btn btn-outline-primary my-2 my-sm-0 ml-3">Register</a>
             </#if>
-            <a href="/register" class="btn btn-outline-primary my-2 my-sm-0 ml-3">Register</a>
         </div>
     </nav>
     <i class="m-5"></i>

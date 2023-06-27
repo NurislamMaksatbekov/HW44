@@ -65,26 +65,30 @@ public class Lesson45Server extends Lesson44Server {
     private void loginPost(HttpExchange exchange) {
         String raw = getBody(exchange);
         Map<String, String> parsed = Utils.parseUrlEncoded(raw, "&");
+
         List<Employee> employees = FileService.readEmployees();
+
         String email = parsed.get("email");
         String password = parsed.get("password");
         employee = new Employee(parsed.get("email"), parsed.get("password"));
+
         if (employees.stream().anyMatch(e -> e.getEmail().equals(email) && e.getPassword().equals(password))) {
             Map<String, Object> data = new HashMap<>();
-            Cookie cookie = Cookie.make("email", email);
+            cookie = Cookie.make("email", email);
+
             String cookieString = getCookies(exchange);
             Map<String, String> cookies = Cookie.parse(cookieString);
-            cookie.setMaxAge(600);
+            cookie.setMaxAge(getMaxAge());
             cookie.setHttpOnly(true);
+
             setCookie(exchange, cookie);
             data.put("cookies", cookies);
-            employee.setAuthorized(employee.isAuthorized());
+
             redirect303(exchange, "/profile");
         } else {
             redirect303(exchange, "/incorrectData");
         }
     }
-
 
     private void loginGet(HttpExchange exchange) {
         renderTemplate(exchange, "login.ftlh", null);
