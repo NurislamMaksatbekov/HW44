@@ -11,7 +11,7 @@ public class EmployersDataModel {
     private final List<Employee> employee = new ArrayList<>();
 
     public EmployersDataModel() {
-        employee.addAll(FileService.readEmployers());
+        employee.addAll(FileService.readEmployees());
     }
 
     public List<Employee> getEmployee() {

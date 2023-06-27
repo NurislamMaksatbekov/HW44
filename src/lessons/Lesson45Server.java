@@ -3,11 +3,13 @@ package lessons;
 import com.sun.net.httpserver.HttpExchange;
 import dataModel.EmployeeDataModel;
 import entity.Employee;
+import server.Cookie;
 import util.Utils;
 import util.FileService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class Lesson45Server extends Lesson44Server {
     private void registerPost(HttpExchange exchange) {
         String raw = getBody(exchange);
         Map<String, String> register = Utils.parseUrlEncoded(raw, "&");
-        List<Employee> employees = FileService.readEmployers();
+        List<Employee> employees = FileService.readEmployees();
         String email = register.get("email");
 
         if (employees.stream().anyMatch(e -> e.getEmail().equals(email))) {
@@ -46,7 +48,7 @@ public class Lesson45Server extends Lesson44Server {
 
             Employee employee = new Employee(name, surname, email, password, 0, 0, new ArrayList<>(), new ArrayList<>());
             employees.add(employee);
-            FileService.writeEmployers(employee);
+            FileService.writeEmployees(employee);
             redirect303(exchange, "/login");
         }
     }
@@ -63,17 +65,26 @@ public class Lesson45Server extends Lesson44Server {
     private void loginPost(HttpExchange exchange) {
         String raw = getBody(exchange);
         Map<String, String> parsed = Utils.parseUrlEncoded(raw, "&");
-        List<Employee> employees = FileService.readEmployers();
+        List<Employee> employees = FileService.readEmployees();
         String email = parsed.get("email");
         String password = parsed.get("password");
         employee = new Employee(parsed.get("email"), parsed.get("password"));
-
-        if(employees.stream().anyMatch(e -> e.getEmail().equals(email) && e.getPassword().equals(password))){
+        if (employees.stream().anyMatch(e -> e.getEmail().equals(email) && e.getPassword().equals(password))) {
+            Map<String, Object> data = new HashMap<>();
+            Cookie cookie = Cookie.make("email", email);
+            String cookieString = getCookies(exchange);
+            Map<String, String> cookies = Cookie.parse(cookieString);
+            cookie.setMaxAge(600);
+            cookie.setHttpOnly(true);
+            setCookie(exchange, cookie);
+            data.put("cookies", cookies);
+            employee.setAuthorized(employee.isAuthorized());
             redirect303(exchange, "/profile");
-        }else {
+        } else {
             redirect303(exchange, "/incorrectData");
         }
     }
+
 
     private void loginGet(HttpExchange exchange) {
         renderTemplate(exchange, "login.ftlh", null);

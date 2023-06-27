@@ -9,5 +9,16 @@
     "reading": 0,
     "readBook": [],
     "readingBook": []
+  },
+  {
+    "id": 2,
+    "name": "Nurislam",
+    "surname": "Maksatbekov",
+    "email": "maksatbekov@a",
+    "password": "asdf1",
+    "read": 0,
+    "reading": 0,
+    "readBook": [],
+    "readingBook": []
   }
 ]

@@ -11,10 +11,12 @@ public class Lesson44Server extends BasicServer {
 
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
-        registerGet("/book", this::freemarkerBookHandler);
-        registerGet("/books", this::freemarkerBooksHandler);
-        registerGet("/employees", this::freemarkerEmployersHandler);
-        registerGet("/employee", this::freemarkerEmployeeHandler);
+            registerGet("/books/book", this::freemarkerBookHandler);
+            registerGet("/books", this::freemarkerBooksHandler);
+            registerGet("/employees", this::freemarkerEmployersHandler);
+            registerGet("/employee", this::freemarkerEmployeeHandler);
+
+
     }
 
     private void freemarkerEmployeeHandler(HttpExchange exchange) {
@@ -22,12 +24,16 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void freemarkerBookHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "book.ftlh", getBooksDataModel());
+            renderTemplate(exchange, "book.ftlh", null);
     }
 
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "books.ftlh", getBooksDataModel());
+        if(!employee.isAuthorized()) {
+            renderTemplate(exchange, "books.ftlh", getBooksDataModel());
+        }else {
+            redirect303(exchange, "/login");
+        }
     }
 
     private void freemarkerEmployersHandler(HttpExchange exchange) {

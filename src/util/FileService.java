@@ -33,7 +33,7 @@ public class FileService {
         return GSON.fromJson(json, Library.class).getBooks();
     }
 
-    public static List<Employee> readEmployers()  {
+    public static List<Employee> readEmployees()  {
         Type list = new TypeToken<List<Employee>>(){}.getType();
         String json = "";
         try {
@@ -44,8 +44,8 @@ public class FileService {
         return GSON.fromJson(json, list);
     }
 
-    public static void writeEmployers(Employee employee){
-        List<Employee> employees = readEmployers();
+    public static void writeEmployees(Employee employee){
+        List<Employee> employees = readEmployees();
         employee.setId(employees.size() + 1);
         employees.add(employee);
         try (Writer writer = new FileWriter(WAY.toString())){

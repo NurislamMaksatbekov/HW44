@@ -13,6 +13,7 @@ public class Employee {
     private int reading;
     private List<Book> readBook;
     private List<Book> readingBook;
+    private boolean authorized;
 
     public Employee(String email, String password) {
         this.email = email;
@@ -100,6 +101,14 @@ public class Employee {
 
     public void setReadingBook(List<Book> readingBook) {
         this.readingBook = readingBook;
+    }
+
+    public boolean isAuthorized() {
+        return authorized;
+    }
+
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 }
 

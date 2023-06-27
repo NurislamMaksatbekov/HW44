@@ -24,7 +24,7 @@
             <#else>
                 <td>Занята</td>
             </#if>
-            <td><a type="button" class="btn btn-dark" href="/book">Подробнее</a></td>
+            <td><a type="button" class="btn btn-dark" href="/books/book">Подробнее</a></td>
         </tr>
     </#list>
     </tbody>
