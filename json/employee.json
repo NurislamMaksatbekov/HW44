@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Жасур",
+    "surname": "Хамидов",
+    "email": "jkh@example.com",
+    "password": "aa",
+    "read": [
+      {
+        "id": 1
+      },
+      {
+        "id": 5
+      }
+    ],
+    "reading": [
+      {
+        "id": 3
+      }
+    ]
+  }
+]

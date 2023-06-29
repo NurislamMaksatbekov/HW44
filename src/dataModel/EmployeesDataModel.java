@@ -6,11 +6,11 @@ import util.FileService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployersDataModel {
+public class EmployeesDataModel {
 
     private final List<Employee> employee = new ArrayList<>();
 
-    public EmployersDataModel() {
+    public EmployeesDataModel() {
         employee.addAll(FileService.readEmployees());
     }
 

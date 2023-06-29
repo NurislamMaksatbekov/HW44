@@ -1,49 +1,37 @@
-{
-  "books": [
+[
     {
       "id": 1,
       "title": "Война и мир",
       "author": "Лев Толстой",
-      "year": 1869,
-      "genre": "Роман",
-      "language": "Русский",
+      "image": "/images/war_peace.jpg",
       "status": true
     },
     {
       "id": 2,
       "title": "Преступление и наказание",
       "author": "Фёдор Достоевский",
-      "year": 1866,
-      "genre": "Роман",
-      "language": "Русский",
+      "image": "/images/2.jpg",
       "status": true
     },
     {
       "id": 3,
       "title": "Мастер и Маргарита",
       "author": "Михаил Булгаков",
-      "year": 1967,
-      "genre": "Роман",
-      "language": "Русский",
-      "status": true
+      "image": "/images/3.jpg",
+      "status": false
     },
     {
       "id": 4,
       "title": "Анна Каренина",
       "author": "Лев Толстой",
-      "year": 1877,
-      "genre": "Роман",
-      "language": "Русский",
+      "image": "/images/4.jpg",
       "status": true
     },
     {
       "id": 5,
       "title": "Евгений Онегин",
       "author": "Александр Пушкин",
-      "year": 1833,
-      "genre": "Роман в стихах",
-      "language": "Русский",
+      "image": "/images/5.jpg",
       "status": true
     }
   ]
-}

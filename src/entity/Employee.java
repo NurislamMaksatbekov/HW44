@@ -9,25 +9,21 @@ public class Employee {
     private String surname;
     private String email;
     private String password;
-    private int read;
-    private int reading;
-    private List<Book> readBook;
-    private List<Book> readingBook;
+    private List<Book> read;
+    private List<Book> reading;
 
     public Employee(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public Employee(String name, String surname, String email, String password, int read, int reading, List<Book> readBook, List<Book> readingBook) {
+    public Employee(String name, String surname, String email, String password, List<Book> read, List<Book> reading) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.read = read;
         this.reading = reading;
-        this.readBook = readBook;
-        this.readingBook = readingBook;
     }
 
     public int getId() {
@@ -70,36 +66,20 @@ public class Employee {
         this.password = password;
     }
 
-    public int getRead() {
+    public List<Book> getRead() {
         return read;
     }
 
-    public void setRead(int read) {
+    public void setRead(List<Book> read) {
         this.read = read;
     }
 
-    public int getReading() {
+    public List<Book> getReading() {
         return reading;
     }
 
-    public void setReading(int reading) {
+    public void setReading(List<Book> reading) {
         this.reading = reading;
-    }
-
-    public List<Book> getReadBook() {
-        return readBook;
-    }
-
-    public void setReadBook(List<Book> readBook) {
-        this.readBook = readBook;
-    }
-
-    public List<Book> getReadingBook() {
-        return readingBook;
-    }
-
-    public void setReadingBook(List<Book> readingBook) {
-        this.readingBook = readingBook;
     }
 }
 

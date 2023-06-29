@@ -1,18 +1,31 @@
 package lessons;
 
 import com.sun.net.httpserver.HttpExchange;
+import dataModel.BookDataModel;
 import dataModel.BooksDataModel;
-import dataModel.EmployersDataModel;
+import dataModel.EmployeesDataModel;
+import entity.Book;
+import entity.Employee;
 import server.BasicServer;
+import service.BookService;
+import util.FileService;
+import util.Utils;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Lesson44Server extends BasicServer {
 
+    private BookService service;
 
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
-            registerGet("/books/book", this::freemarkerBookHandler);
+        service = BookService.getInstance();
+        registerGet("/books/book", this::freemarkerBookHandler);
             registerGet("/books", this::freemarkerBooksHandler);
             registerGet("/employees", this::freemarkerEmployersHandler);
             registerGet("/employee", this::freemarkerEmployeeHandler);
@@ -30,7 +43,10 @@ public class Lesson44Server extends BasicServer {
 
     private void freemarkerBookHandler(HttpExchange exchange) {
         if(isAuthorized()){
-            renderTemplate(exchange, "book.ftlh", null);
+            String query = getQueryParams(exchange);
+            Map<String, String> params = Utils.parseUrlEncoded(query, "&");
+            String id = params.getOrDefault("id", "null");
+            renderTemplate(exchange, "book.ftlh", getBookDataModel(id));
         }else {
             redirect303(exchange, "/login");
 
@@ -40,7 +56,8 @@ public class Lesson44Server extends BasicServer {
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
         if(isAuthorized()){
-            renderTemplate(exchange, "books.ftlh", getBooksDataModel());
+            var model = service.getBooksAndWhomIssued();
+            renderTemplate(exchange, "books.ftlh", model);
         }else {
             redirect303(exchange, "/login");
         }
@@ -59,8 +76,18 @@ public class Lesson44Server extends BasicServer {
         return new BooksDataModel();
     }
 
-    private EmployersDataModel getEmployersDataModel(){
-        return new EmployersDataModel();
+    private BookDataModel getBookDataModel(String bookId){
+        int id = Integer.parseInt(bookId);
+        List<Book> list = FileService.readBooks();
+        Book book = list.stream()
+                .filter(e -> id == e.getId())
+                .findAny()
+                .orElse(list.get(0));
+        return new BookDataModel(book);
+    }
+
+    private EmployeesDataModel getEmployersDataModel(){
+        return new EmployeesDataModel();
     }
 
 }

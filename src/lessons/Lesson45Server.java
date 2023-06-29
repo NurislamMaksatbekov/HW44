@@ -26,12 +26,7 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void incorrectGet(HttpExchange exchange) {
-        if(isAuthorized()){
             renderTemplate(exchange, "incorrectData.ftlh", null);
-        }else {
-            redirect303(exchange, "/login");
-
-        }
     }
 
     private void profileGet(HttpExchange exchange) {
@@ -55,7 +50,7 @@ public class Lesson45Server extends Lesson44Server {
             String surname = register.get("surname");
             String password = register.get("password");
 
-            Employee employee = new Employee(name, surname, email, password, 0, 0, new ArrayList<>(), new ArrayList<>());
+            Employee employee = new Employee(name, surname, email, password, new ArrayList<>(), new ArrayList<>());
             employees.add(employee);
             FileService.writeEmployees(employee);
             redirect303(exchange, "/login");
@@ -64,11 +59,8 @@ public class Lesson45Server extends Lesson44Server {
 
 
     private void errorGet(HttpExchange exchange) {
-        if(isAuthorized()){
             renderTemplate(exchange, "error.ftlh", null);
-        }else {
             redirect303(exchange, "/login");
-        }
     }
 
     private void registerGet(HttpExchange exchange) {
