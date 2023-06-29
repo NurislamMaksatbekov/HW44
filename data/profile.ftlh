@@ -1,12 +1,18 @@
 <#import "layout.ftlh" as main>
 <@main.layout>
-    <form action="/login" method="post">
-        <div class="card" style="width: 18rem;">
-            <p>Information about you</p>
-            <ul class="list-group list-group-flush">
                 <#if employee?has_content>
-                    <li><p><b>Your login: </b> ${employee.email}</p></li>
-                    <li><p><b>Your password: </b> ${employee.password}</p></li>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            <b>THIS IS YOUR PROFILE</b>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Name: ${employee.name}</li>
+                            <li class="list-group-item">Surname: ${employee.surname}</li>
+                            <li class="list-group-item">Email: ${employee.email}</li>
+                            <li class="list-group-item"><a href="#" class="btn btn-primary">MORE INFO</a></li>
+                        </ul>
+                    </div>
+
                 </#if>
             </ul>
         </div>

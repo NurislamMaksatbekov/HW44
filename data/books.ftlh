@@ -9,12 +9,12 @@
     </tr>
     </thead>
     <tbody>
-    <#list books as item>
+    <#list books as book>
         <tr class="bg-success">
-            <td>${item.book.title}</td>
-            <td>${item.book.author}</td>
-            <td>${item.book.status?string('Свободна', 'Занята')}</td>
-            <td><a type="button" class="btn btn-dark" href="/books/book?id=${item.book.id}">Подробнее</a></td>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.status?string('Свободна', 'Занята')}</td>
+            <td><a type="button" class="btn btn-dark" href="/books/book?id=${book.id}">Подробнее</a></td>
         </tr>
     </#list>
 

@@ -5,26 +5,19 @@ import dataModel.BookDataModel;
 import dataModel.BooksDataModel;
 import dataModel.EmployeesDataModel;
 import entity.Book;
-import entity.Employee;
 import server.BasicServer;
-import service.BookService;
 import util.FileService;
 import util.Utils;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Lesson44Server extends BasicServer {
 
-    private BookService service;
 
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
-        service = BookService.getInstance();
         registerGet("/books/book", this::freemarkerBookHandler);
             registerGet("/books", this::freemarkerBooksHandler);
             registerGet("/employees", this::freemarkerEmployersHandler);
@@ -56,8 +49,7 @@ public class Lesson44Server extends BasicServer {
 
     private void freemarkerBooksHandler(HttpExchange exchange) {
         if(isAuthorized()){
-            var model = service.getBooksAndWhomIssued();
-            renderTemplate(exchange, "books.ftlh", model);
+            renderTemplate(exchange, "books.ftlh", getBooksDataModel());
         }else {
             redirect303(exchange, "/login");
         }

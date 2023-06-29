@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 public abstract class BasicServer {
 
-    protected Employee employee;
     protected Cookie cookie;
     protected int maxAge = 300;
     protected boolean authorized;

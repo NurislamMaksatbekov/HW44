@@ -8,10 +8,7 @@ import util.Utils;
 import util.FileService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Lesson45Server extends Lesson44Server {
     public Lesson45Server(String host, int port) throws IOException {
@@ -31,10 +28,22 @@ public class Lesson45Server extends Lesson44Server {
 
     private void profileGet(HttpExchange exchange) {
         if(isAuthorized()) {
-            renderTemplate(exchange, "profile.ftlh", new EmployeeDataModel(employee));
+            String query = getQueryParams(exchange);
+            Map<String, String> params = Utils.parseUrlEncoded(query, "&");
+            String email = params.getOrDefault("email", "null");
+            renderTemplate(exchange, "profile.ftlh", getEmployeeDataModel(email));
         }else {
             redirect303(exchange, "/login");
         }
+    }
+
+    private EmployeeDataModel getEmployeeDataModel(String email) {
+        List<Employee> list = FileService.readEmployees();
+        Employee employee = list.stream()
+                .filter(e -> Objects.equals(email, e.getEmail()))
+                .findAny()
+                .orElse(list.get(0));
+        return new EmployeeDataModel(employee);
     }
 
     private void registerPost(HttpExchange exchange) {
@@ -75,7 +84,6 @@ public class Lesson45Server extends Lesson44Server {
 
         String email = parsed.get("email");
         String password = parsed.get("password");
-        employee = new Employee(parsed.get("email"), parsed.get("password"));
 
         if (employees.stream().anyMatch(e -> e.getEmail().equals(email) && e.getPassword().equals(password))) {
             Map<String, Object> data = new HashMap<>();
@@ -89,7 +97,7 @@ public class Lesson45Server extends Lesson44Server {
             setCookie(exchange, cookie);
             data.put("cookies", cookies);
 
-            redirect303(exchange, "/profile");
+            redirect303(exchange, "/profile?email=" + parsed.get(email));
             setAuthorized(!isAuthorized());
         } else {
             redirect303(exchange, "/incorrectData");

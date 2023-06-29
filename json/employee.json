@@ -7,16 +7,28 @@
     "password": "aa",
     "read": [
       {
-        "id": 1
+        "id": 1,
+        "status": false
       },
       {
-        "id": 5
+        "id": 5,
+        "status": false
       }
     ],
     "reading": [
       {
-        "id": 3
+        "id": 3,
+        "status": false
       }
     ]
+  },
+  {
+    "id": 2,
+    "name": "Nurislam",
+    "surname": "Maksatbekov",
+    "email": "maksatbekov@a",
+    "password": "aa",
+    "read": [],
+    "reading": []
   }
 ]
