@@ -44,9 +44,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/employees">Employees</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
-                </li>
             </ul>
             <#if employee?has_content>
                 <a href="/" class="btn btn-outline-success my-2 my-sm-0">LOGOUT</a>

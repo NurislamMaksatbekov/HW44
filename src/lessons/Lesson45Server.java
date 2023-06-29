@@ -6,11 +6,11 @@ import entity.Employee;
 import server.Cookie;
 import util.Utils;
 import util.FileService;
-
 import java.io.IOException;
 import java.util.*;
 
 public class Lesson45Server extends Lesson44Server {
+
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/error", this::errorGet);
@@ -39,11 +39,11 @@ public class Lesson45Server extends Lesson44Server {
 
     private EmployeeDataModel getEmployeeDataModel(String email) {
         List<Employee> list = FileService.readEmployees();
-        Employee employee = list.stream()
+        return list.stream()
                 .filter(e -> Objects.equals(email, e.getEmail()))
-                .findAny()
-                .orElse(list.get(0));
-        return new EmployeeDataModel(employee);
+                .findFirst()
+                .map(EmployeeDataModel::new)
+                .orElse(null);
     }
 
     private void registerPost(HttpExchange exchange) {
@@ -97,15 +97,18 @@ public class Lesson45Server extends Lesson44Server {
             setCookie(exchange, cookie);
             data.put("cookies", cookies);
 
-            redirect303(exchange, "/profile?email=" + parsed.get(email));
+            redirect303(exchange, "/profile?email="+email);
             setAuthorized(!isAuthorized());
         } else {
             redirect303(exchange, "/incorrectData");
-            setAuthorized(isAuthorized());
         }
     }
+
 
     private void loginGet(HttpExchange exchange) {
         renderTemplate(exchange, "login.ftlh", null);
     }
 }
+
+
+

@@ -9,9 +9,9 @@
                             <li class="list-group-item">Name: ${employee.name}</li>
                             <li class="list-group-item">Surname: ${employee.surname}</li>
                             <li class="list-group-item">Email: ${employee.email}</li>
-                            <li class="list-group-item"><a href="#" class="btn btn-primary">MORE INFO</a></li>
                         </ul>
                     </div>
+
 
                 </#if>
             </ul>
