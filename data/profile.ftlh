@@ -20,7 +20,12 @@
             <div class="card-body">
                 <h5 class="card-title">READING BOOKS</h5>
                 <#list employee.reading as reading>
-                    <li>${reading.title}</li>
+                    <li class="d-flex justify-content-between mb-2">${reading.title}
+                        <form action="/backBook" method="post">
+                            <input type="hidden" name="bookId" id="${reading.id}">
+                            <button type="button" class="btn btn-primary">BACK</button>
+                        </form>
+                    </li>
                 </#list>
             </div>
         </div>

@@ -37,7 +37,7 @@ public class Lesson45Server extends Lesson44Server {
         if (isAuthorized(exchange)) {
             String query = getQueryParams(exchange);
             Map<String, String> params = Utils.parseUrlEncoded(query, "&");
-            String email = params.getOrDefault("email", "null");
+            String email = params.getOrDefault("email", null);
             renderTemplate(exchange, "profile.ftlh", getEmployeeDataModel(email));
         } else {
             redirect303(exchange, "/login");
