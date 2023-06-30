@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
@@ -9,12 +10,10 @@ public class Employee {
     private String surname;
     private String email;
     private String password;
-    private List<Book> read;
-    private List<Book> reading;
+    private List<Book> read = new ArrayList<>();
+    private List<Book> reading = new ArrayList<>();
 
-    public Employee(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public Employee() {
     }
 
     public Employee(String name, String surname, String email, String password, List<Book> read, List<Book> reading) {

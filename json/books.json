@@ -4,14 +4,14 @@
       "title": "Война и мир",
       "author": "Лев Толстой",
       "image": "/images/war_peace.jpg",
-      "status": true
+      "status": false
     },
     {
       "id": 2,
       "title": "Преступление и наказание",
       "author": "Фёдор Достоевский",
       "image": "/images/2.jpg",
-      "status": true
+      "status": false
     },
     {
       "id": 3,
@@ -32,6 +32,6 @@
       "title": "Евгений Онегин",
       "author": "Александр Пушкин",
       "image": "/images/5.jpg",
-      "status": true
+      "status": false
     }
   ]

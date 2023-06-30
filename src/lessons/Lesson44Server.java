@@ -5,16 +5,21 @@ import dataModel.BookDataModel;
 import dataModel.BooksDataModel;
 import dataModel.EmployeesDataModel;
 import entity.Book;
+import entity.Employee;
 import server.BasicServer;
 import util.FileService;
 import util.Utils;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class Lesson44Server extends BasicServer {
 
+    private final Employee employee = new Employee();
+
+    private final Book book = new Book();
 
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
@@ -22,6 +27,15 @@ public class Lesson44Server extends BasicServer {
             registerGet("/books", this::freemarkerBooksHandler);
             registerGet("/employees", this::freemarkerEmployersHandler);
             registerGet("/employee", this::freemarkerEmployeeHandler);
+            registerPost("/takeBook", this::takeBook);
+            registerPost("/backBook", this::backBook);
+    }
+
+    private void backBook(HttpExchange exchange) {
+    }
+
+    private void takeBook(HttpExchange exchange) {
+
     }
 
     private void freemarkerEmployeeHandler(HttpExchange exchange) {
@@ -36,7 +50,7 @@ public class Lesson44Server extends BasicServer {
         if(isAuthorized(exchange)){
             String query = getQueryParams(exchange);
             Map<String, String> params = Utils.parseUrlEncoded(query, "&");
-            String id = params.getOrDefault("id", "null");
+            String id = params.getOrDefault("id", null);
             renderTemplate(exchange, "book.ftlh", getBookDataModel(id));
         }else {
             redirect303(exchange, "/login");
@@ -66,11 +80,11 @@ public class Lesson44Server extends BasicServer {
 
     private BookDataModel getBookDataModel(String bookId){
         int id = Integer.parseInt(bookId);
-        List<Book> list = FileService.readBooks();
-        Book book = list.stream()
-                .filter(e -> id == e.getId())
+        List<Book> books = FileService.readBooks();
+        Book book = books.stream()
+                .filter(b -> b.getId() == id)
                 .findAny()
-                .orElse(list.get(0));
+                .orElse(books.get(0));
         return new BookDataModel(book);
     }
 
