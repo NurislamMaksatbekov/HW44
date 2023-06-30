@@ -23,29 +23,12 @@ public abstract class BasicServer {
 
     protected Cookie cookie;
     protected int maxAge = 300;
-    protected boolean authorized;
-
 
     public int getMaxAge() {
         return maxAge;
     }
 
-    public int setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-        return maxAge;
-    }
-
-    public boolean isAuthorized() {
-        return authorized;
-    }
-
-    public void setAuthorized(boolean authorized) {
-        this.authorized = authorized;
-    }
-
     private final Configuration freemarker = initFreeMarker();
-
-
     private final HttpServer server;
     private final String dataDir = "data";
     private Map<String, RouteHandler> routes = new HashMap<>();
@@ -140,7 +123,7 @@ public abstract class BasicServer {
 
     private void indexPage(HttpExchange exchange) {
         renderTemplate(exchange, "index.ftlh", null);
-        setMaxAge(7);
+
     }
 
     protected final void registerGenericHandler(String method, String route, RouteHandler handler) {
@@ -207,10 +190,6 @@ public abstract class BasicServer {
         route.handle(exchange);
     }
 
-    protected String getContentType(HttpExchange exchange) {
-        return exchange.getRequestHeaders().getOrDefault("Content-Type", List.of("")).get(0);
-    }
-
     protected String getBody(HttpExchange exchange) {
         InputStream input = exchange.getRequestBody();
         InputStreamReader isr = new InputStreamReader(input, StandardCharsets.UTF_8);
@@ -245,6 +224,27 @@ public abstract class BasicServer {
         return Objects.nonNull(query) ? query : "";
     }
 
+    protected boolean isAuthorized(HttpExchange exchange) {
+        String cookieString = exchange.getRequestHeaders().getFirst("Cookie");
+        if (cookieString != null) {
+            Map<String, String> cookies = Cookie.parse(cookieString);
+            if (cookies.containsKey("email")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void logout(HttpExchange exchange) {
+        String cookieString = exchange.getRequestHeaders().getFirst("Cookie");
+        if (cookieString != null) {
+            Map<String, String> cookies = Cookie.parse(cookieString);
+            if (cookies.containsKey("email")) {
+                String expiredCookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                exchange.getResponseHeaders().add("Set-Cookie", expiredCookie);
+            }
+        }
+    }
 
     public final void start() {
         server.start();

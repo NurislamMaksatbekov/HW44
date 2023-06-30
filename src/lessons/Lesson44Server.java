@@ -22,12 +22,10 @@ public class Lesson44Server extends BasicServer {
             registerGet("/books", this::freemarkerBooksHandler);
             registerGet("/employees", this::freemarkerEmployersHandler);
             registerGet("/employee", this::freemarkerEmployeeHandler);
-
-
     }
 
     private void freemarkerEmployeeHandler(HttpExchange exchange) {
-        if(isAuthorized()){
+        if(isAuthorized(exchange)){
             renderTemplate(exchange, "employee.ftlh", getEmployersDataModel());
         }else {
             redirect303(exchange, "/login");
@@ -35,7 +33,7 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void freemarkerBookHandler(HttpExchange exchange) {
-        if(isAuthorized()){
+        if(isAuthorized(exchange)){
             String query = getQueryParams(exchange);
             Map<String, String> params = Utils.parseUrlEncoded(query, "&");
             String id = params.getOrDefault("id", "null");
@@ -46,9 +44,8 @@ public class Lesson44Server extends BasicServer {
         }
     }
 
-
     private void freemarkerBooksHandler(HttpExchange exchange) {
-        if(isAuthorized()){
+        if(isAuthorized(exchange)){
             renderTemplate(exchange, "books.ftlh", getBooksDataModel());
         }else {
             redirect303(exchange, "/login");
@@ -56,13 +53,12 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void freemarkerEmployersHandler(HttpExchange exchange) {
-        if(isAuthorized()){
+        if(isAuthorized(exchange)){
             renderTemplate(exchange, "employees.ftlh", getEmployersDataModel());
         }else {
             redirect303(exchange, "/login");
         }
     }
-
 
     private BooksDataModel getBooksDataModel(){
         return new BooksDataModel();

@@ -20,7 +20,7 @@ public class FileService {
     private FileService(){}
     private static final Gson GSON = new GsonBuilder().create();
     private static final Path PATH = Paths.get("json/books.json");
-    private static final Path PATH_EMPLOYEE = Paths.get("json/employee.json");
+    private static final Path PATH_EMPLOYEE = Paths.get("json/employees.json");
 
     public static List<Book> readBooks()  {
         Type list = new TypeToken<List<Book>>(){}.getType();

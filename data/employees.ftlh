@@ -14,8 +14,6 @@
             <td>${employer.name}</td>
             <td>${employer.surname}</td>
             <td>${employer.email}</td>
-            <td><a type="button" class="btn btn-light" href="/employee">Подробнее</a></td>
-
         </tr>
     </#list>
     </tbody>

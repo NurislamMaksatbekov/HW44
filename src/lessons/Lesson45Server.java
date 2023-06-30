@@ -6,6 +6,7 @@ import entity.Employee;
 import server.Cookie;
 import util.Utils;
 import util.FileService;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -20,19 +21,25 @@ public class Lesson45Server extends Lesson44Server {
         registerGet("/register", this::registerGet);
         registerPost("/register", this::registerPost);
         registerGet("/profile", this::profileGet);
+        registerGet("/logout", this::logoutGet);
+    }
+
+    private void logoutGet(HttpExchange exchange) {
+        logout(exchange);
+        renderTemplate(exchange, "logout.ftlh", null);
     }
 
     private void incorrectGet(HttpExchange exchange) {
-            renderTemplate(exchange, "incorrectData.ftlh", null);
+        renderTemplate(exchange, "incorrectData.ftlh", null);
     }
 
     private void profileGet(HttpExchange exchange) {
-        if(isAuthorized()) {
+        if (isAuthorized(exchange)) {
             String query = getQueryParams(exchange);
             Map<String, String> params = Utils.parseUrlEncoded(query, "&");
             String email = params.getOrDefault("email", "null");
             renderTemplate(exchange, "profile.ftlh", getEmployeeDataModel(email));
-        }else {
+        } else {
             redirect303(exchange, "/login");
         }
     }
@@ -66,10 +73,9 @@ public class Lesson45Server extends Lesson44Server {
         }
     }
 
-
     private void errorGet(HttpExchange exchange) {
-            renderTemplate(exchange, "error.ftlh", null);
-            redirect303(exchange, "/login");
+        renderTemplate(exchange, "error.ftlh", null);
+        redirect303(exchange, "/login");
     }
 
     private void registerGet(HttpExchange exchange) {
@@ -97,13 +103,11 @@ public class Lesson45Server extends Lesson44Server {
             setCookie(exchange, cookie);
             data.put("cookies", cookies);
 
-            redirect303(exchange, "/profile?email="+email);
-            setAuthorized(!isAuthorized());
+            redirect303(exchange, "/profile?email=" + email);
         } else {
             redirect303(exchange, "/incorrectData");
         }
     }
-
 
     private void loginGet(HttpExchange exchange) {
         renderTemplate(exchange, "login.ftlh", null);
