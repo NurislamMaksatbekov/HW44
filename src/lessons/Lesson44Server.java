@@ -17,10 +17,6 @@ import java.util.Map;
 
 public class Lesson44Server extends BasicServer {
 
-    private final Employee employee = new Employee();
-
-    private final Book book = new Book();
-
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/books/book", this::freemarkerBookHandler);

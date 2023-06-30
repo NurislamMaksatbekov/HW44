@@ -8,9 +8,6 @@ public class Book {
     private boolean status;
 
 
-    public Book() {
-    }
-
     public Book(int id, String title, String author, String image, boolean status) {
         this.id = id;
         this.title = title;

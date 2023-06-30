@@ -10,11 +10,8 @@ public class Employee {
     private String surname;
     private String email;
     private String password;
-    private List<Book> read = new ArrayList<>();
-    private List<Book> reading = new ArrayList<>();
-
-    public Employee() {
-    }
+    private List<Book> read;
+    private List<Book> reading;
 
     public Employee(String name, String surname, String email, String password, List<Book> read, List<Book> reading) {
         this.name = name;
