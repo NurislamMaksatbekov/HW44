@@ -69,34 +69,34 @@
             cursor: pointer;
         }
     </style>
-        <form action="/register" method="post">
-            <fieldset>
-                <div class="legend">
-                  <p>Welcome!</p>
-                  <img src="/images/1.jpg" alt="coins" style="display:block; width: 200px; height: 200px;">
-                </div>
-                <div class="form-element">
-                    <label for="name">name</label>
-                    <input type="name" name="name" id="user-name" placeholder="your name">
-                </div>
-                <div class="form-element">
-                    <label for="user-surname">surname</label>
-                    <input type="surname" name="surname" id="user-surname" placeholder="your surname">
-                </div>
-                <div class="form-element">
-                    <label for="user-email">email</label>
-                    <input type="email" name="email" id="user-email" placeholder="your email">
-                </div>
-                <div class="form-element">
-                    <label for="user-password">password</label>
-                    <input type="password" name="password" id="password" placeholder="your password" required>
-                </div>
-                <div class="hr-line">
-                    <span class="details">one more step to go</span>
-                </div>
-                <div class="form-element">
-                    <button class="register-button" type="submit">REGISTER!</button>
-                </div>
-            </fieldset>
-        </form>
+    <form action="/register" method="post">
+        <fieldset>
+            <div class="legend">
+                <p>Welcome!</p>
+                <img src="/images/1.jpg" alt="coins" style="display:block; width: 200px; height: 200px;">
+            </div>
+            <div class="form-element">
+                <label for="name">name</label>
+                <input type="name" name="name" id="user-name" placeholder="your name">
+            </div>
+            <div class="form-element">
+                <label for="user-surname">surname</label>
+                <input type="surname" name="surname" id="user-surname" placeholder="your surname">
+            </div>
+            <div class="form-element">
+                <label for="user-email">email</label>
+                <input type="email" name="email" id="user-email" placeholder="your email">
+            </div>
+            <div class="form-element">
+                <label for="user-password">password</label>
+                <input type="password" name="password" id="password" placeholder="your password" required>
+            </div>
+            <div class="hr-line">
+                <span class="details">one more step to go</span>
+            </div>
+            <div class="form-element">
+                <button class="register-button" type="submit">REGISTER!</button>
+            </div>
+        </fieldset>
+    </form>
 </@main.layout>

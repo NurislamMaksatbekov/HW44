@@ -9,10 +9,13 @@
             <li class="list-group-item">${book.author}</li>
             <li class="list-group-item">${book.status?string('Свободна', 'Занята')}</li>
         </ul>
-            <#if book.status>
-        <div class="card-body">
-            <a href="#" class="btn btn-primary">TAKE</a>
-        </div>
-            </#if>
+        <#if book.status>
+            <div class="card-body">
+                <form action="/takeBook" method="post">
+                    <input type="hidden" name="bookId" id="${book.id}">
+                    <button type="button" class="btn btn-primary">TAKE</button>
+                </form>
+            </div>
+        </#if>
     </div>
 </@main.layout>

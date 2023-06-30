@@ -1,11 +1,15 @@
 package entity;
 
 public class Book {
-    private int id;
-    private final String title;
-    private final String author;
-    private final String image;
+    private Integer id;
+    private  String title;
+    private  String author;
+    private  String image;
     private boolean status;
+
+
+    public Book() {
+    }
 
     public Book(int id, String title, String author, String image, boolean status) {
         this.id = id;
