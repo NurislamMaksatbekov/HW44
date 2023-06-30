@@ -16,36 +16,19 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class BasicServer {
 
-    protected Employee employee;
     protected Cookie cookie;
     protected int maxAge = 300;
-    protected boolean authorized;
-
 
     public int getMaxAge() {
         return maxAge;
     }
 
-    public int setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-        return maxAge;
-    }
-
-    public boolean isAuthorized() {
-        return authorized;
-    }
-
-    public void setAuthorized(boolean authorized) {
-        this.authorized = authorized;
-    }
-
     private final Configuration freemarker = initFreeMarker();
-
-
     private final HttpServer server;
     private final String dataDir = "data";
     private Map<String, RouteHandler> routes = new HashMap<>();
@@ -75,29 +58,41 @@ public abstract class BasicServer {
         }
     }
 
-        private static Configuration initFreeMarker() {
-            try {
-                Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
-                cfg.setDirectoryForTemplateLoading(new File("data"));
+    private static Configuration initFreeMarker() {
+        try {
+            Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
+            cfg.setDirectoryForTemplateLoading(new File("data"));
 
-                cfg.setDefaultEncoding("UTF-8");
-                cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-                cfg.setLogTemplateExceptions(false);
-                cfg.setWrapUncheckedExceptions(true);
-                cfg.setFallbackOnNullLoopVariable(false);
-                return cfg;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            cfg.setDefaultEncoding("UTF-8");
+            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+            cfg.setLogTemplateExceptions(false);
+            cfg.setWrapUncheckedExceptions(true);
+            cfg.setFallbackOnNullLoopVariable(false);
+            return cfg;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static String makeKey(String method, String route) {
+        route = ensureStartsWithSlash(route);
         return String.format("%s %s", method.toUpperCase(), route);
+    }
+
+    private static String ensureStartsWithSlash(String route) {
+        if (route.startsWith(".")) {
+            return route;
+        }
+        return route.startsWith("/") ? route : "/" + route;
     }
 
     private static String makeKey(HttpExchange exchange) {
         var method = exchange.getRequestMethod();
         var path = exchange.getRequestURI().getPath();
+
+        if (path.endsWith("/") && path.length() > 1) {
+            path = path.substring(0, path.length() - 1);
+        }
 
         var index = path.lastIndexOf(".");
         var extOrPath = index != -1 ? path.substring(index).toLowerCase() : path;
@@ -126,17 +121,21 @@ public abstract class BasicServer {
     }
 
 
-    private void indexPage(HttpExchange exchange){
+    private void indexPage(HttpExchange exchange) {
         renderTemplate(exchange, "index.ftlh", null);
-        setMaxAge(7);
+
+    }
+
+    protected final void registerGenericHandler(String method, String route, RouteHandler handler) {
+        getRoutes().put(makeKey(method, route), handler);
     }
 
     protected final void registerGet(String route, RouteHandler handler) {
-        getRoutes().put("GET " + route, handler);
+        registerGenericHandler("GET", route, handler);
     }
 
-    protected final void registerPost(String route, RouteHandler handler){
-        getRoutes().put("POST " + route, handler);
+    protected final void registerPost(String route, RouteHandler handler) {
+        registerGenericHandler("POST", route, handler);
     }
 
     protected final void registerFileHandler(String fileExt, ContentType type) {
@@ -168,8 +167,7 @@ public abstract class BasicServer {
         return Path.of(dataDir, s);
     }
 
-    protected final void sendByteData(HttpExchange exchange, ResponseCodes responseCode,
-                                      ContentType contentType, byte[] data) throws IOException {
+    protected final void sendByteData(HttpExchange exchange, ResponseCodes responseCode, ContentType contentType, byte[] data) throws IOException {
         try (var output = exchange.getResponseBody()) {
             setContentType(exchange, contentType);
             exchange.sendResponseHeaders(responseCode.getCode(), 0);
@@ -192,43 +190,61 @@ public abstract class BasicServer {
         route.handle(exchange);
     }
 
-    protected String getContentType(HttpExchange exchange){
-        return exchange.getRequestHeaders()
-                .getOrDefault("Content-Type", List.of(""))
-                .get(0);
-    }
-
-    protected String getBody(HttpExchange exchange){
+    protected String getBody(HttpExchange exchange) {
         InputStream input = exchange.getRequestBody();
         InputStreamReader isr = new InputStreamReader(input, StandardCharsets.UTF_8);
-        try(BufferedReader reader = new BufferedReader(isr)){
+        try (BufferedReader reader = new BufferedReader(isr)) {
             return reader.lines().collect(Collectors.joining(("")));
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
     }
 
-    protected void redirect303(HttpExchange exchange, String route){
+    protected void redirect303(HttpExchange exchange, String route) {
         try {
             exchange.getResponseHeaders().add("Location", route);
             exchange.sendResponseHeaders(ResponseCodes.REDIRECT.getCode(), 0);
             exchange.getResponseBody().close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected static String getCookies(HttpExchange exchange){
-        return exchange.getRequestHeaders()
-                .getOrDefault("Cookie", List.of(""))
-                        .get(0);
+    protected static String getCookies(HttpExchange exchange) {
+        return exchange.getRequestHeaders().getOrDefault("Cookie", List.of("")).get(0);
     }
 
-    protected void setCookie(HttpExchange exchange, Cookie cookie){
+    protected void setCookie(HttpExchange exchange, Cookie cookie) {
         exchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
     }
 
+    protected String getQueryParams(HttpExchange exchange) {
+        String query = exchange.getRequestURI().getQuery();
+        return Objects.nonNull(query) ? query : "";
+    }
+
+    protected boolean isAuthorized(HttpExchange exchange) {
+        String cookieString = exchange.getRequestHeaders().getFirst("Cookie");
+        if (cookieString != null) {
+            Map<String, String> cookies = Cookie.parse(cookieString);
+            if (cookies.containsKey("email")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void logout(HttpExchange exchange) {
+        String cookieString = exchange.getRequestHeaders().getFirst("Cookie");
+        if (cookieString != null) {
+            Map<String, String> cookies = Cookie.parse(cookieString);
+            if (cookies.containsKey("email")) {
+                String expiredCookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                exchange.getResponseHeaders().add("Set-Cookie", expiredCookie);
+            }
+        }
+    }
 
     public final void start() {
         server.start();

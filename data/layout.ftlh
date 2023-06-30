@@ -46,7 +46,7 @@
                 </li>
             </ul>
             <#if employee?has_content>
-                <a href="/" class="btn btn-outline-success my-2 my-sm-0">LOGOUT</a>
+                <a href="/logout" class="btn btn-outline-success my-2 my-sm-0">LOGOUT</a>
             <#else>
                 <a href="/login" class="btn btn-outline-success my-2 my-sm-0">LogIn</a>
                 <a href="/register" class="btn btn-outline-primary my-2 my-sm-0 ml-3">Register</a>

@@ -8,12 +8,10 @@ import util.Utils;
 import util.FileService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Lesson45Server extends Lesson44Server {
+
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/error", this::errorGet);
@@ -23,23 +21,36 @@ public class Lesson45Server extends Lesson44Server {
         registerGet("/register", this::registerGet);
         registerPost("/register", this::registerPost);
         registerGet("/profile", this::profileGet);
+        registerGet("/logout", this::logoutGet);
+    }
+
+    private void logoutGet(HttpExchange exchange) {
+        logout(exchange);
+        renderTemplate(exchange, "logout.ftlh", null);
     }
 
     private void incorrectGet(HttpExchange exchange) {
-        if(isAuthorized()){
-            renderTemplate(exchange, "incorrectData.ftlh", null);
-        }else {
-            redirect303(exchange, "/login");
-
-        }
+        renderTemplate(exchange, "incorrectData.ftlh", null);
     }
 
     private void profileGet(HttpExchange exchange) {
-        if(isAuthorized()) {
-            renderTemplate(exchange, "profile.ftlh", new EmployeeDataModel(employee));
-        }else {
+        if (isAuthorized(exchange)) {
+            String query = getQueryParams(exchange);
+            Map<String, String> params = Utils.parseUrlEncoded(query, "&");
+            String email = params.getOrDefault("email", "null");
+            renderTemplate(exchange, "profile.ftlh", getEmployeeDataModel(email));
+        } else {
             redirect303(exchange, "/login");
         }
+    }
+
+    private EmployeeDataModel getEmployeeDataModel(String email) {
+        List<Employee> list = FileService.readEmployees();
+        return list.stream()
+                .filter(e -> Objects.equals(email, e.getEmail()))
+                .findFirst()
+                .map(EmployeeDataModel::new)
+                .orElse(null);
     }
 
     private void registerPost(HttpExchange exchange) {
@@ -55,20 +66,16 @@ public class Lesson45Server extends Lesson44Server {
             String surname = register.get("surname");
             String password = register.get("password");
 
-            Employee employee = new Employee(name, surname, email, password, 0, 0, new ArrayList<>(), new ArrayList<>());
+            Employee employee = new Employee(name, surname, email, password, new ArrayList<>(), new ArrayList<>());
             employees.add(employee);
             FileService.writeEmployees(employee);
             redirect303(exchange, "/login");
         }
     }
 
-
     private void errorGet(HttpExchange exchange) {
-        if(isAuthorized()){
-            renderTemplate(exchange, "error.ftlh", null);
-        }else {
-            redirect303(exchange, "/login");
-        }
+        renderTemplate(exchange, "error.ftlh", null);
+        redirect303(exchange, "/login");
     }
 
     private void registerGet(HttpExchange exchange) {
@@ -83,7 +90,6 @@ public class Lesson45Server extends Lesson44Server {
 
         String email = parsed.get("email");
         String password = parsed.get("password");
-        employee = new Employee(parsed.get("email"), parsed.get("password"));
 
         if (employees.stream().anyMatch(e -> e.getEmail().equals(email) && e.getPassword().equals(password))) {
             Map<String, Object> data = new HashMap<>();
@@ -97,11 +103,9 @@ public class Lesson45Server extends Lesson44Server {
             setCookie(exchange, cookie);
             data.put("cookies", cookies);
 
-            redirect303(exchange, "/profile");
-            setAuthorized(!isAuthorized());
+            redirect303(exchange, "/profile?email=" + email);
         } else {
             redirect303(exchange, "/incorrectData");
-            setAuthorized(isAuthorized());
         }
     }
 
@@ -109,3 +113,6 @@ public class Lesson45Server extends Lesson44Server {
         renderTemplate(exchange, "login.ftlh", null);
     }
 }
+
+
+
